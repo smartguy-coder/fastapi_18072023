@@ -1,13 +1,9 @@
-from typing import Union
-
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 templates = Jinja2Templates(directory='templates')
-
-
 
 #  WEB
 
@@ -21,7 +17,14 @@ def root_web(request: Request):
     return templates.TemplateResponse('index.html', context=context)
 
 
+@app.get('/web')
+def root_web2(request: Request):
+    context = {
+        'title': 'First page on WEB',
+        'request': request,
+    }
 
+    return templates.TemplateResponse('index.html', context=context)
 
 
 #  API
