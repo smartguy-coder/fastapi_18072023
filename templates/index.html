@@ -52,4 +52,13 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg"  width="500">
 
+<img src="{{ url_for('static', path='image.jpg') }}" width="500">
+<br>
+<br>
+<br>
+<img width="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Colorful_spring_garden.jpg/1200px-Colorful_spring_garden.jpg" class="float-start">
+<img width="200" src="{{ url_for('static', path='image.jpg') }}" class="float-end">
+
+
+
 {% endblock %}
