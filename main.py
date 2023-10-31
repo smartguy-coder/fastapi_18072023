@@ -5,7 +5,15 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+#  WEB
 
+
+
+
+
+
+
+#  API
 class RootUser(BaseModel):
     name: str
     hobbies: list[str]
@@ -15,14 +23,14 @@ class RootUser(BaseModel):
         return self.age + 4
 
 
-@app.get("/")
-@app.post("/")
+@app.get("/api/")
+@app.post("/api/")
 def read_root() -> RootUser:
     data = {"name": "Alex", 'hobbies': ['tennis', 'soccer']}
     return RootUser(**data)
 
 
-@app.post("/get_user")
+@app.post("/api/get_user")
 def read_root_user(user: RootUser) -> RootUser:
     print(user.get_age_plus_4(), 888888888888888)
     return user
@@ -36,7 +44,7 @@ items = [
 ]
 
 
-@app.get("/items/{item_id}")
+@app.get("/api/items/{item_id}")
 def read_item(item_id: int, limit: int | None = None) -> dict:
     print(item_id, type(item_id))
     print(f'{limit=}')
