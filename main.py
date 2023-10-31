@@ -24,7 +24,7 @@ def root_web2(request: Request):
         'request': request,
     }
 
-    return templates.TemplateResponse('index.html', context=context)
+    return templates.TemplateResponse('other.html', context=context)
 
 
 #  API
