@@ -8,7 +8,7 @@ templates = Jinja2Templates(directory='templates')
 #  WEB
 
 @app.get('/')
-def root_web(request: Request):
+def main(request: Request):
     context = {
         'title': 'First page',
         'request': request,
@@ -22,6 +22,7 @@ def root_web2(request: Request):
     context = {
         'title': 'First page on WEB',
         'request': request,
+        'my_age': 'I am ten',
     }
 
     return templates.TemplateResponse('other.html', context=context)
