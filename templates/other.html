@@ -1,10 +1,13 @@
-{% extend 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
-    Other {{ title }} on the page
+    Other >>> {{ title }} <<< on the page
 {% endblock %}
 
 {% block content %}
-    <p class="h1">{{ title }}</p>
-    <p>This is the other page</p>
+    <h1>{{ title }}</h1>
+
+    <h2>This is the other page <span class="badge bg-secondary">New</span></h2>
+
+
 {% endblock %}
