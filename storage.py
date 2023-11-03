@@ -13,6 +13,7 @@ class StorageSQLite:
                     author TEXT NOT NULL,
                     description TEXT,
                     price REAL NOT NULL,
+                    cover TEXT NOT NULL,
                     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
             )"""
             cursor.execute(query)
@@ -25,7 +26,7 @@ class StorageSQLite:
             query = """
                 SELECT *
                 FROM books
-                ORDER BY id
+                ORDER BY id DESC
                 LIMIT :Limit_last
             """
             result = cursor.execute(query, {'Limit_last': limit})
@@ -35,15 +36,15 @@ class StorageSQLite:
     def get_book_by_title(self):
         pass
 
-    def add_book(self, *, title: str, author: str, description: str, price: float):
+    def add_book(self, *, title: str, author: str, description: str, price: float, cover: str):
         with sqlite3.connect(self.database_name) as connection:
             cursor = connection.cursor()
             query = """
-                INSERT INTO books (title, author, description, price)
-                VALUES (?,?,?,?)
+                INSERT INTO books (title, author, description, price, cover)
+                VALUES (?,?,?,?,?)
             """
-            cursor.execute(query, (title, author, description, price))
+            cursor.execute(query, (title, author, description, price, cover))
             connection.commit()
 
 
-database = StorageSQLite('database.sqlite3')
+database = StorageSQLite('database_prod.sqlite3')

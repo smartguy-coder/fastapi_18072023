@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import FastAPI, Request, status
 from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
@@ -39,6 +41,11 @@ class NewBook(BaseModel):
     author: str
     description: str = None
     price: float
+    cover: str
+
+class Book(NewBook):
+    pk: int
+    created_at: datetime
 
 
 @app.post("/api/add_book", status_code=status.HTTP_201_CREATED)
@@ -48,14 +55,27 @@ def add_book(book: NewBook):
         author=book.author,
         description=book.description,
         price=book.price,
+        cover=book.cover,
     )
     return book
 
 
 @app.get('/api/get_books')
-def get_books(limit: int = 10):
+def get_books(limit: int = 10) -> list[Book]:
     books = db.get_books(limit=limit)
-    return books
+    books_serialized = [
+        Book(
+            pk=book[0],
+            title=book[1],
+            author=book[2],
+            description=book[3],
+            price=book[4],
+            cover=book[5],
+            created_at=book[6],
+        )
+        for book in books
+    ]
+    return books_serialized
 
 
 
