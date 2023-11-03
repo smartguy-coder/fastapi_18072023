@@ -52,6 +52,13 @@ def add_book(book: NewBook):
     return book
 
 
+@app.get('/api/get_books')
+def get_books(limit: int = 10):
+    books = db.get_books(limit=limit)
+    return books
+
+
+
 class RootUser(BaseModel):
     name: str
     hobbies: list[str]

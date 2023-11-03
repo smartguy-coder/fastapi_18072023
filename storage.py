@@ -18,8 +18,19 @@ class StorageSQLite:
             cursor.execute(query)
             connection.commit()
 
-    def get_first_ten_newest(self):
-        return
+    def get_books(self, limit: int = 10):
+
+        with sqlite3.connect(self.database_name) as connection:
+            cursor = connection.cursor()
+            query = """
+                SELECT *
+                FROM books
+                ORDER BY id
+                LIMIT :Limit_last
+            """
+            result = cursor.execute(query, {'Limit_last': limit})
+            return result.fetchall()
+
 
     def get_book_by_title(self):
         pass
