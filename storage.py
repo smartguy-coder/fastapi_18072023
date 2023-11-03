@@ -24,7 +24,7 @@ class Storage:
     def get_book_by_title(self):
         pass
 
-    def add_book(self, *, title: str, author: str, description: str):
+    def add_book(self, *, title: str, author: str, description: str, price: float):
         with sqlite3.connect(self.database_name) as connection:
             cursor = connection.cursor()
             query = """
