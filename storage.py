@@ -36,18 +36,18 @@ class StorageSQLite:
     def get_book_by_title_or_other_str(self, query_str: str):
         with sqlite3.connect(self.database_name) as connection:
             cursor = connection.cursor()
-            query = """
+            query = f"""
                 SELECT *
                 FROM books
                 WHERE 
-                    title LIKE :query_str 
+                    title LIKE '%{query_str}%'
                 OR 
-                    author LIKE :query_str
+                    author LIKE '%{query_str}%'
                 OR
-                    description LIKE :query_str
+                    description LIKE '%{query_str}%'
                 ORDER BY id DESC
             """
-            result = cursor.execute(query, {'query_str': query_str})
+            result = cursor.execute(query)
             return result.fetchall()
 
     def add_book(self, *, title: str, author: str, description: str, price: float, cover: str):

@@ -80,7 +80,7 @@ def get_books(limit: int = 10) -> list[Book]:
 
 
 @app.get('/api/get_books_search')
-def get_books_search(query_str: int = 10) -> list[Book]:
+def get_books_search(query_str: str) -> list[Book]:
     books = db.get_book_by_title_or_other_str(query_str=query_str)
     books_serialized = [
         Book(
