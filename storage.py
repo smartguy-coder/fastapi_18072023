@@ -10,8 +10,11 @@ class Storage:
                 CREATE TABLE IF NOT EXISTS books (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
-                    author TEXT NOT NULL
-            """
+                    author TEXT NOT NULL,
+                    description TEXT,
+                    price REAL NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )"""
             cursor.execute(query)
             connection.commit()
 
@@ -21,8 +24,15 @@ class Storage:
     def get_book_by_title(self):
         pass
 
-    def add_book(self):
-        pass
+    def add_book(self, *, title: str, author: str, description: str):
+        with sqlite3.connect(self.database_name) as connection:
+            cursor = connection.cursor()
+            query = """
+                INSERT INTO books (title, author, description)
+                VALUES (?,?,?)
+            """
+            cursor.execute(query, (title, author, description))
+            connection.commit()
 
 
 database = Storage('database.sqlite3')

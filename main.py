@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -34,6 +34,19 @@ def root_web2(request: Request):
 
 
 #  API
+class NewBook(BaseModel):
+    title: str
+    author: str
+    description: str = None
+    price: float
+
+
+@app.post("/api/add_book", status_code=status.HTTP_201_CREATED)
+def add_book(book: NewBook):
+    return book
+
+
+
 class RootUser(BaseModel):
     name: str
     hobbies: list[str]
