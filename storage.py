@@ -33,8 +33,22 @@ class StorageSQLite:
             return result.fetchall()
 
 
-    def get_book_by_title(self):
-        pass
+    def get_book_by_title_or_other_str(self, query_str: str):
+        with sqlite3.connect(self.database_name) as connection:
+            cursor = connection.cursor()
+            query = """
+                SELECT *
+                FROM books
+                WHERE 
+                    title LIKE :query_str 
+                OR 
+                    author LIKE :query_str
+                OR
+                    description LIKE :query_str
+                ORDER BY id DESC
+            """
+            result = cursor.execute(query, {'query_str': query_str})
+            return result.fetchall()
 
     def add_book(self, *, title: str, author: str, description: str, price: float, cover: str):
         with sqlite3.connect(self.database_name) as connection:

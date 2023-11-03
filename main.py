@@ -43,6 +43,7 @@ class NewBook(BaseModel):
     price: float
     cover: str
 
+
 class Book(NewBook):
     pk: int
     created_at: datetime
@@ -61,6 +62,7 @@ def add_book(book: NewBook):
 
 
 @app.get('/api/get_books')
+@app.post('/api/get_books')
 def get_books(limit: int = 10) -> list[Book]:
     books = db.get_books(limit=limit)
     books_serialized = [
@@ -72,12 +74,26 @@ def get_books(limit: int = 10) -> list[Book]:
             price=book[4],
             cover=book[5],
             created_at=book[6],
-        )
-        for book in books
+        ) for book in books
     ]
     return books_serialized
 
 
+@app.get('/api/get_books_search')
+def get_books_search(query_str: int = 10) -> list[Book]:
+    books = db.get_book_by_title_or_other_str(query_str=query_str)
+    books_serialized = [
+        Book(
+            pk=book[0],
+            title=book[1],
+            author=book[2],
+            description=book[3],
+            price=book[4],
+            cover=book[5],
+            created_at=book[6],
+        ) for book in books
+    ]
+    return books_serialized
 
 class RootUser(BaseModel):
     name: str
