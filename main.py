@@ -43,8 +43,13 @@ class NewBook(BaseModel):
 
 @app.post("/api/add_book", status_code=status.HTTP_201_CREATED)
 def add_book(book: NewBook):
+    db.add_book(
+        title=book.title,
+        author=book.author,
+        description=book.description,
+        price=book.price,
+    )
     return book
-
 
 
 class RootUser(BaseModel):

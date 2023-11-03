@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class Storage:
+class StorageSQLite:
     def __init__(self, database_name: str):
         self.database_name = database_name
         with sqlite3.connect(database_name) as connection:
@@ -28,11 +28,11 @@ class Storage:
         with sqlite3.connect(self.database_name) as connection:
             cursor = connection.cursor()
             query = """
-                INSERT INTO books (title, author, description)
-                VALUES (?,?,?)
+                INSERT INTO books (title, author, description, price)
+                VALUES (?,?,?,?)
             """
-            cursor.execute(query, (title, author, description))
+            cursor.execute(query, (title, author, description, price))
             connection.commit()
 
 
-database = Storage('database.sqlite3')
+database = StorageSQLite('database.sqlite3')
