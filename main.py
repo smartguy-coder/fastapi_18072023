@@ -12,6 +12,34 @@ templates = Jinja2Templates(directory='templates')
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 
+class NewBook(BaseModel):
+    title: str
+    author: str
+    description: str = None
+    price: float
+    cover: str
+
+
+class Book(NewBook):
+    pk: int
+    created_at: datetime
+
+
+def _serialize_books(books: list[tuple]) -> list[Book]:
+    books_serialized = [
+        Book(
+            pk=book[0],
+            title=book[1],
+            author=book[2],
+            description=book[3],
+            price=book[4],
+            cover=book[5],
+            created_at=book[6],
+        ) for book in books
+    ]
+    return books_serialized
+
+
 #  WEB
 
 @app.get('/', tags=['web'])
@@ -24,29 +52,19 @@ def main(request: Request):
     return templates.TemplateResponse('index.html', context=context)
 
 
-@app.get('/web', tags=['web'])
-def root_web2(request: Request):
+@app.get('/all-books', tags=['web'])
+def all_books(request: Request):
     context = {
-        'title': 'First page on WEB',
+        'title': 'Our books',
         'request': request,
-        'my_age': 'I am ten',
+        'books': db.get_books(),
     }
 
-    return templates.TemplateResponse('other.html', context=context)
+    return templates.TemplateResponse('all_books.html', context=context)
 
 
 #  API
-class NewBook(BaseModel):
-    title: str
-    author: str
-    description: str = None
-    price: float
-    cover: str
 
-
-class Book(NewBook):
-    pk: int
-    created_at: datetime
 
 
 @app.post("/api/add_book", status_code=status.HTTP_201_CREATED, tags=['API'])
@@ -65,35 +83,13 @@ def add_book(book: NewBook):
 @app.post('/api/get_books', tags=['API'])
 def get_books(limit: int = 10) -> list[Book]:
     books = db.get_books(limit=limit)
-    books_serialized = [
-        Book(
-            pk=book[0],
-            title=book[1],
-            author=book[2],
-            description=book[3],
-            price=book[4],
-            cover=book[5],
-            created_at=book[6],
-        ) for book in books
-    ]
-    return books_serialized
+    return _serialize_books(books)
 
 
 @app.get('/api/get_books_search', tags=['API'])
 def get_books_search(query_str: str) -> list[Book]:
     books = db.get_book_by_title_or_other_str(query_str=query_str)
-    books_serialized = [
-        Book(
-            pk=book[0],
-            title=book[1],
-            author=book[2],
-            description=book[3],
-            price=book[4],
-            cover=book[5],
-            created_at=book[6],
-        ) for book in books
-    ]
-    return books_serialized
+    return _serialize_books(books)
 
 
 
@@ -117,7 +113,7 @@ class RootUser(BaseModel):
 
 
 @app.get("/api/", tags=['trash'])
-@app.post("/api/")
+@app.post("/api/", tags=['trash'])
 def read_root() -> RootUser:
     data = {"name": "Alex", 'hobbies': ['tennis', 'soccer']}
     return RootUser(**data)
