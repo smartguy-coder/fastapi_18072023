@@ -79,16 +79,23 @@ def add_book(request: Request):
 
 
 @app.post('/add-book', tags=['web'])
-def add_book_final(request: Request):
-    # db.add_book(
-    #     title=book.title,
-    #     author=book.author,
-    #     description=book.description,
-    #     price=book.price,
-    #     cover=book.cover,
-    # )
+def add_book_final(
+        request: Request,
+        title: str = Form(),
+        author: str = Form(),
+        description: str = Form(None),
+        price: str = Form(),
+        cover: str = Form(),
+):
+    db.add_book(
+        title=title,
+        author=author,
+        description=description,
+        price=price,
+        cover=cover,
+    )
 
-    books = db.get_books(limit=15)
+    books = db.get_books(limit=5)
     books_serialized = _serialize_books(books)
     context = {
         'title': 'Add your book',
