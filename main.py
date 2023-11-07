@@ -84,7 +84,7 @@ def add_book_final(
         title: str = Form(),
         author: str = Form(),
         description: str = Form(None),
-        price: str = Form(),
+        price: float = Form(),
         cover: str = Form(),
 ):
     db.add_book(
