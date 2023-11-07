@@ -32,7 +32,6 @@ class StorageSQLite:
             result = cursor.execute(query, {'Limit_last': limit})
             return result.fetchall()
 
-
     def get_book_by_title_or_other_str(self, query_str: str):
         with sqlite3.connect(self.database_name) as connection:
             cursor = connection.cursor()
