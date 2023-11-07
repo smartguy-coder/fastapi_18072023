@@ -54,12 +54,13 @@ def main(request: Request):
 
 @app.get('/all-books', tags=['web'])
 def all_books(request: Request):
+    books = db.get_books(limit=5)
+    books_serialized = _serialize_books(books)
     context = {
         'title': 'Our books',
         'request': request,
-        'books': db.get_books(),
+        'books': books_serialized,
     }
-
     return templates.TemplateResponse('all_books.html', context=context)
 
 
