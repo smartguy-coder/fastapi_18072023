@@ -11,7 +11,8 @@
         <h3>Title: {{ book.title }}</h3>
         <h4>Author: {{ book.author }}</h4>
         <p>Price: {{ book.price }}</p>
-    <img src="{{ url_for('static', path='images/' + book.image) }}" alt="" width="200" height="200">
+    <img src="{{ book.cover }}" alt="" width="200" height="200">
+    <hr>
     {% endfor %}
 
 
