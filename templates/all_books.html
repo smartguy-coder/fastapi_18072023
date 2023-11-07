@@ -11,6 +11,7 @@
         <h3>Title: {{ book.title }}</h3>
         <h4>Author: {{ book.author }}</h4>
         <p>Price: {{ book.price }}</p>
+        <p>Published: {{ book.created_at }}</p>
     <img src="{{ book.cover }}" alt="" width="200" height="200">
     <hr>
     {% endfor %}

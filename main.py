@@ -54,6 +54,7 @@ def main(request: Request):
 
 @app.get('/all-books', tags=['web'])
 @app.post('/search', tags=['web'])
+@app.get('/search', tags=['web'])
 def all_books(request: Request, search_text: str = Form(None)):
     if search_text:
         books = db.get_book_by_title_or_other_str(query_str=search_text)
@@ -61,12 +62,40 @@ def all_books(request: Request, search_text: str = Form(None)):
         books = db.get_books(limit=15)
     books_serialized = _serialize_books(books)
     context = {
-        'title': 'Our books',
+        'title': f'Search result for text {search_text}' if search_text else 'Our books',
         'request': request,
         'books': books_serialized,
     }
     return templates.TemplateResponse('all_books.html', context=context)
 
+
+@app.get('/add-book', tags=['web'])
+def add_book(request: Request):
+    context = {
+        'title': 'Add your book',
+        'request': request,
+    }
+    return templates.TemplateResponse('add_book.html', context=context)
+
+
+@app.post('/add-book', tags=['web'])
+def add_book_final(request: Request):
+    # db.add_book(
+    #     title=book.title,
+    #     author=book.author,
+    #     description=book.description,
+    #     price=book.price,
+    #     cover=book.cover,
+    # )
+
+    books = db.get_books(limit=15)
+    books_serialized = _serialize_books(books)
+    context = {
+        'title': 'Add your book',
+        'request': request,
+        'books': books_serialized,
+    }
+    return templates.TemplateResponse('all_books.html', context=context)
 
 #  API
 
