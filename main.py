@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, status, Form
 from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -54,8 +54,11 @@ def main(request: Request):
 
 @app.get('/all-books', tags=['web'])
 @app.post('/search', tags=['web'])
-def all_books(request: Request):
-    books = db.get_books(limit=15)
+def all_books(request: Request, search_text: str = Form(None)):
+    if search_text:
+        books = db.get_book_by_title_or_other_str(query_str=search_text)
+    else:
+        books = db.get_books(limit=15)
     books_serialized = _serialize_books(books)
     context = {
         'title': 'Our books',
