@@ -54,7 +54,7 @@ def main(request: Request):
 
 @app.get('/all-books', tags=['web'])
 def all_books(request: Request):
-    books = db.get_books(limit=5)
+    books = db.get_books(limit=15)
     books_serialized = _serialize_books(books)
     context = {
         'title': 'Our books',
