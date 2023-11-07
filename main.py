@@ -42,7 +42,7 @@ def _serialize_books(books: list[tuple]) -> list[Book]:
 
 #  WEB
 
-@app.get('/', tags=['web'])
+@app.get('/', tags=['web'], include_in_schema=False)
 def main(request: Request):
     context = {
         'title': 'First page',
